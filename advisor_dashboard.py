@@ -25,8 +25,8 @@ def update_output(selected_course):
     
     return f"Data Loaded: {len(df)} rows"
 
-if __name__ == "__main__":
-    app.run_server(debug=True)
+#if __name__ == "__main__":
+#    app.run_server(debug=True)
 
-#app = dash.Dash(__name__)
-#server = app.server
+app = dash.Dash(__name__)
+server = app.server
