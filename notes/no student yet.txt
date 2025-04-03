@@ -1,0 +1,2 @@
+
+This is the notepad. It gets saved each time you write something in it. It is linked to the selected student.

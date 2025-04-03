@@ -1,0 +1,6 @@
+Erklärung der Kachel "Next Semester": 
+
+Pass Probability: Der Barchart zeigt die modellierte Wahrscheinlichkeit mit der der gewählte Studierende alle Kurse der aktuellen Auswahl der Kachel 'Potential Courses' im nächsten Semester bestehen wird. Desto mehr Kurse gewählt werden, desto niedriger wird die Wahrscheinlichkeit. 
+Achtung: Die Vorhersage beruht nur auf den Erstversuchen der Studierenden und beeinhaltet keine Zweitversuche. 
+
+Credits: Der Barchart zeigt die Summe der akutell gewählten Credits der Kurse aus 'Potential Courses'. Die Hintergrundfarbe grün gibt die durchschnittliche Anzahl an Credits, die der Studierende in der Vergangenheit belegt hat. Darüber hinaus gibt die blaue Farbe die Empfehlung der Universität an, und die rote Farbe steht für Creditsummen, die über die Empfehlung hinweg reichen.  

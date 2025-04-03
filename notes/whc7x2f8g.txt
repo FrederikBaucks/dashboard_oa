@@ -1,0 +1,49 @@
+
+First Meeting:
+-Talked about ABC
+-Recommended Courses XYZ
+
+Second Meeting:
+-Talk about time management
+
+
+Aktuelle Daten: Datenabnbindung, neue Prüfungsordnung, AI (Ba/Ma)
+, IT Security (Ba/Ma) 
+
+Nicht nur Pflichtmodule
+
+Wahlpflichtmodulanmeldung: über alle Studenten, wie sind die Prozesse, wann werden welche Kurse gehört/angemeldet. 
+
+Host the dashboard on github with dummy data
+
+Kursbaum mit hierarchischer Struktur.
+
+Informatik I + II + III werden auch geteilt zischen den Studiengängen
+
+Angwandte Informatik ist am interassantesten 
+
+Input feld: Welche Fragen wurden gestellt, sammeln für Statistiken, Wann werden welche Fragen gestellt, Wann finden beratungen statt, Wie lange beratungen,
+
+ 
+
+
+
+
+Modul / Modultyp spezifischer GPA 
+Lehrveanstaltungskonzept/Material 
+Anzahl der Versuche (overview)
+Visualisierung für Studierende (evtl. vereinfacht, farbliche Kennung) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
