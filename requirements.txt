@@ -1,5 +1,6 @@
 dash
 dash_bootstrap_components
+matplotlib
 dash_daq
 pathlib
 flask_caching
