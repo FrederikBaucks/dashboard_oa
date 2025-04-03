@@ -61,7 +61,7 @@ from components.button_style import roundbutton, help_modal
 personal_info_table = dbc.Table(
     id='personal_info_table',
     bordered=True,
-    dark=False,
+    #dark=False,
     hover=True,
     responsive=False,
     striped=True,
@@ -84,7 +84,7 @@ personal_info = dbc.Card(
 academic_history_table = dbc.Table(
     id='academic_history_table',
     bordered=True,
-    dark=False,
+    #dark=False,
     hover=True,
     responsive=False,
     striped=True,
