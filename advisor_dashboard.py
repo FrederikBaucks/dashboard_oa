@@ -11,7 +11,12 @@ engine = create_engine("sqlite:///university.db", pool_size=5, max_overflow=10)
 
 app.layout = html.Div([
     dcc.Dropdown(id="course-dropdown", options=[]),
-    html.Div(id="output")
+    html.Div(id="output"),
+    dcc.Textarea(
+        placeholder='Enter a value...',
+        value='This is a TextArea component',
+        style={'width': '100%'}
+    )
 ])
 
 @app.callback(
@@ -28,5 +33,5 @@ def update_output(selected_course):
 #if __name__ == "__main__":
 #    app.run_server(debug=True)
 
-app = dash.Dash(__name__)
+# app = dash.Dash(__name__)     
 server = app.server
