@@ -13,13 +13,21 @@ import get_courses
 import dash_bootstrap_components as dbc
 from components import colors
 import sqlite3
+import os
+import matplotlib.pyplot as plt
+import networkx as nx
+import matplotlib
+matplotlib.use('Agg')
+import plotly.graph_objects as go
+import networkx as nx
+from course_matrix import net_graph
 
 
+DATABASE_LOC = 'university.db'
+no_stud_chosen = 'no student yet'
 
-
-
-#df = pd.read_csv('data/df.csv')
-conn = sqlite3.connect('university.db')
+# read data from database
+conn = sqlite3.connect(DATABASE_LOC)
 df_stud = pd.read_sql_query("SELECT student_id, gpa, ability FROM Students", conn)
 modul_data = pd.read_sql_query("SELECT course_name," \
                                       "recommended_semester,"\
@@ -28,42 +36,15 @@ modul_data = pd.read_sql_query("SELECT course_name," \
                                       )
 conn.close()
 
-#modul_data = pd.read_csv('data/Pflichtmodule.csv', sep=';')
-
-#df_stud = pd.read_csv('data/df_stud.csv')
-#student_data = pd.read_pickle(r'data/AI_raw.pickle')
-no_stud_chosen = 'no student yet'
-
-import os
-import matplotlib.pyplot as plt
-import networkx as nx
-import matplotlib
-matplotlib.use('Agg')
-#from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-#import plotly.graph_objects as go
-#import base64
-#import random
 
 
-import plotly.graph_objects as go
-import networkx as nx
-#import dash_core_components as dcc
 
-# @app.callback(
-#     Output('network-graph', 'figure'),
-#     [Input('student_dropdown', 'value')])
-# def update_graph(student_id):
-#     fig = create_plotly_graph()
-#     return fig
-
-from course_matrix import net_graph
 @app.callback(
     Output('network-graph', 'figure'),
     [Input('student_dropdown', 'value')])
 def update_graph(student_id):
     # call the net_graph function to update the graph
     if student_id != 'no student yet':
-        print(student_id)
         fig = net_graph(student_id)
     else:
         fig = net_graph()
@@ -110,9 +91,15 @@ def update_graph(student_id):
 )
 def update_student_info(student_id):
     if student_id != 'no student yet':
-        student_index = [x for x in range(len(student_data.students)) if student_data.students[x].name == student_id][0]
-        last_semester = max(student_data.students[student_index].times)
-        email = student_id+'@rub.de'
+        # call student data from database
+        stud_conn = sqlite3.connect(DATABASE_LOC)
+        student_data = pd.read_sql_query("SELECT gpa, ability FROM Students WHERE student_id = '" + student_id + "'", stud_conn)
+        stud_conn.close()
+        try:
+            last_semester = student_data['relative_semester']
+        except:
+            last_semester = np.random.randint(1,12)
+        email = student_id+'@edu.de'
     else:
         last_semester = 'None'
         email = 'None'
@@ -424,13 +411,24 @@ def update_diff_figure(value, selected_rows):
         Input(component_id = 'student_dropdown', component_property = 'value')
 )
 def update_table_raw_data(slider_value, student_value):
-    temp_df = pd.DataFrame()
-    raw_df = pd.read_csv('data/raw.csv', low_memory=False)
-    selected_student = student_value
+
+    enroll_conn = sqlite3.connect(DATABASE_LOC)
+    temp_df =  pd.read_sql_query("SELECT * FROM Enrollments WHERE student_id = '" + str(student_value) + "'", conn)
+    
+    
+    # df_stud = pd.read_sql_query("SELECT student_id, gpa, ability FROM Students", conn)
+    # modul_data = pd.read_sql_query("SELECT course_name," \
+    #                                     "recommended_semester,"\
+    #                                     "credits,"\
+    #                                     "department FROM Courses", conn
+    #                                     )
+    conn.close()
+    #raw_df = pd.read_csv('data/raw.csv', low_memory=False)
+    #selected_student = student_value
     #Find all rows using 'ID' column in raw data that belong to selected student:
-    sel_stud_rows = np.where(raw_df['ID']==selected_student)[0]
+    #sel_stud_rows = np.where(raw_df['ID']==selected_student)[0]
     #construct new dataframe with only selected rows:
-    temp_df = raw_df.iloc[sel_stud_rows]
+    #temp_df = raw_df.iloc[sel_stud_rows]
     data = temp_df.to_dict('records')
     columns = [{"name": i, "id": i} for i in temp_df.columns]
     return data, columns

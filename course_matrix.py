@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import os
 import networkx as nx
+DATABASE_LOC = 'university.db'
+import sqlite3
 # student_data = pd.read_pickle(r'data/AI_raw.pickle')
 # courses = pd.read_csv('data/Pflichtmodule.csv', sep=';')
 
@@ -144,8 +146,14 @@ def net_graph(student_id='', time_sort=False, ):
         return fig
 
     # Load the data of courses and student
-    course_data = pd.read_csv('data/Pflichtmodule.csv', sep=';')
-    att_mat = np.load('data/student_matrices/'+student_id+'.npy')
+    conn = sqlite3.connect(DATABASE_LOC)
+    course_data = pd.read_sql_query("SELECT course_name," \
+                                      "recommended_semester,"\
+                                      "credits,"\
+                                      "department FROM Courses", conn
+                                      )
+    
+    # att_mat = np.load('data/student_matrices/'+student_id+'.npy')
     stud_group = pd.read_pickle('data/AI_raw.pickle')
     # Find student in student group
     for student in stud_group.students:
@@ -160,10 +168,10 @@ def net_graph(student_id='', time_sort=False, ):
     # Add weighted edges
     for i, row in enumerate(att_mat):
         for j, weight in enumerate(row):
-            G.add_edge(course_data['Modul'][i], course_data['Modul'][j], weight=weight+1)
+            G.add_edge(course_data['course_name'][i], course_data['course_name'][j], weight=weight+1)
 
 
-    mapping = dict(zip(G, course_data['Modul']))
+    mapping = dict(zip(G, course_data['course_name']))
     G = nx.relabel_nodes(G, mapping)
 
    
@@ -171,20 +179,20 @@ def net_graph(student_id='', time_sort=False, ):
     # Create coordinates for the graph nodes 
     pos = {}
     counter = [0,0,0,0,0,0]
-    for i in range(len(course_data['Modul'])):
-        pos[course_data['Modul'][i]]=(course_data['Semester der Modulpruefung'][i], counter[course_data['Semester der Modulpruefung'][i]-1])
-        counter[course_data['Semester der Modulpruefung'][i]-1]+=1
+    for i in range(len(course_data['course_name'])):
+        pos[course_data['course_name'][i]]=(course_data['recommended_semester'][i], counter[course_data['recommended_semester'][i]-1])
+        counter[course_data['recommended_semester'][i]-1]+=1
 
     if time_sort:
         # Create coordinates according to students progress
         pos = {}
         counter = [0,0,0,0,0,0]
-        for i in range(len(course_data['Modul'])):
-            if course_data['Modul'][i] in stud.courses:
-                pos[course_data['Modul'][i]]=(stud.courses[course_data['Modul'][i]]['semester'], counter[stud.courses[course_data['Modul'][i]]['semester']-1])
-                counter[stud.courses[course_data['Modul'][i]]['semester']-1]+=1
+        for i in range(len(course_data['course_name'])):
+            if course_data['course_name'][i] in stud.courses:
+                pos[course_data['course_name'][i]]=(stud.courses[course_data['course_name'][i]]['semester'], counter[stud.courses[course_data['course_name'][i]]['semester']-1])
+                counter[stud.courses[course_data['course_name'][i]]['semester']-1]+=1
             else:
-                pos[course_data['Modul'][i]]=(0, 0)
+                pos[course_data['course_name'][i]]=(0, 0)
 
 
     

@@ -26,7 +26,7 @@ from components import *
 #         plt.savefig('assets/graphs/'+id+'.png')
 #         plt.clf()
         
-    
+
 server = app.server
 
 if __name__ == '__main__':
