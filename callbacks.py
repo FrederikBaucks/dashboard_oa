@@ -413,7 +413,7 @@ def update_diff_figure(value, selected_rows):
 def update_table_raw_data(slider_value, student_value):
 
     enroll_conn = sqlite3.connect(DATABASE_LOC)
-    temp_df =  pd.read_sql_query("SELECT * FROM Enrollments WHERE student_id = '" + str(student_value) + "'", conn)
+    temp_df =  pd.read_sql_query("SELECT * FROM Enrollments WHERE student_id = '" + str(student_value) + "'", enroll_conn)
     
     
     # df_stud = pd.read_sql_query("SELECT student_id, gpa, ability FROM Students", conn)
@@ -422,7 +422,7 @@ def update_table_raw_data(slider_value, student_value):
     #                                     "credits,"\
     #                                     "department FROM Courses", conn
     #                                     )
-    conn.close()
+    enroll_conn.close()
     #raw_df = pd.read_csv('data/raw.csv', low_memory=False)
     #selected_student = student_value
     #Find all rows using 'ID' column in raw data that belong to selected student:
